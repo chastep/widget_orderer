@@ -5,3 +5,21 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
+
+
+type_info = [{ name: 'widget' }, { name: 'widget pro' }, { name: 'widget xtreme' }]
+types = Type.create(type_info)
+colors = ['red', 'yellow', 'blue']
+dates = [Time.current + 1.weeks, Time.current + 2.weeks, Time.current + 3.weeks]
+
+10.times do
+  Order.create(
+    {
+      quantity: rand(1..100),
+      color: colors.sample,
+      deliver_by: dates.sample,
+      type: types.sample
+    }
+  )
+end
+
