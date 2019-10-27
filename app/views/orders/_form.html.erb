@@ -1,17 +1,10 @@
-<%= form_with(model: order, local: true) do |form| %>
-  <% if order.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
-
-      <ul>
-        <% order.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+<%= simple_form_for @order do |f| %>
+  <%= f.input :quantity, input_html: { min: 1 } %>
+  <%= f.input :color, collection: Order::VALID_COLORS %>
+  <%= f.input :deliver_by, as: :date,
+    start_year: Date.today.year,
+    order: [:day, :month, :year]
+  %>
+  <%= f.association :type, collection: Type.all %>
+  <%= f.button :submit %>
 <% end %>
