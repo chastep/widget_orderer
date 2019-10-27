@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe "types/new", type: :view do
-  before(:each) do
-    assign(:type, Type.new(
-      :name => "MyString"
-    ))
-  end
+  let(:type) { create(:type) }
 
-  it "renders new type form" do
+  before(:each) { @type = assign(:type, type) }
+
+  xit "renders new type form" do
     render
 
     assert_select "form[action=?][method=?]", types_path, "post" do

@@ -61,6 +61,11 @@ class OrdersController < ApplicationController
     end
   end
 
+  # redirect all malformed urls
+  def redirect_to_home
+    redirect_to(orders_path)
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_order

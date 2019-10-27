@@ -27,21 +27,21 @@ RSpec.describe TypesController, type: :controller do
     end
   end
 
-  describe "GET #new" do
+  xdescribe "GET #new" do
     it "returns a success response" do
       get :new, params: {}
       expect(response).to be_successful
     end
   end
 
-  describe "GET #edit" do
+  xdescribe "GET #edit" do
     it "returns a success response" do
       get :edit, params: {id: type.to_param}
       expect(response).to be_successful
     end
   end
 
-  describe "POST #create" do
+  xdescribe "POST #create" do
     context "with valid params" do
       it "creates a new Type" do
         expect {
@@ -63,7 +63,7 @@ RSpec.describe TypesController, type: :controller do
     end
   end
 
-  describe "PUT #update" do
+  xdescribe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
         {
@@ -91,7 +91,7 @@ RSpec.describe TypesController, type: :controller do
     end
   end
 
-  describe "DELETE #destroy" do
+  xdescribe "DELETE #destroy" do
     it "destroys the requested type" do
       type2 = Type.create! valid_attributes
       expect {

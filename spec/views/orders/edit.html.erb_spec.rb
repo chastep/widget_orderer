@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "orders/edit", type: :view do
-  before(:each) do
-    @order = assign(:order, Order.create!())
-  end
+  let(:order) { create(:order) }
+
+  before(:each) { @order = assign(:order, order) }
 
   it "renders the edit order form" do
     render

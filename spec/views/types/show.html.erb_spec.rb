@@ -1,11 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe "types/show", type: :view do
-  before(:each) do
-    @type = assign(:type, Type.create!(
-      :name => "Name"
-    ))
-  end
+  let(:type) { create(:type) }
+
+  before(:each) { @type = assign(:type, type) }
 
   it "renders attributes in <p>" do
     render
