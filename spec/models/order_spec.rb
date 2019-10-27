@@ -13,6 +13,8 @@ RSpec.describe Order, type: :model do
     [:quantity, :color, :deliver_by, :type_id].each do |field|
       it { expect(subject).to validate_presence_of(field) }
     end
+    it { expect(subject).to validate_numericality_of(:quantity).is_greater_than_or_equal_to(0) }
+    it { expect(subject).to validate_numericality_of(:quantity).only_integer }
 
     context 'deliver by date validation' do
       it 'vaidates that deliver by date is at least 1 week away' do

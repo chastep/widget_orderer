@@ -5,6 +5,10 @@ class Order < ApplicationRecord
 
   validates_presence_of :quantity, :color, :deliver_by, :type_id
   validates :color, inclusion: { in: VALID_COLORS }
+  validates :quantity, numericality: {
+    greater_than_or_equal_to: 0,
+    only_integer: true
+  }
   validate :deliver_by_date_one_week_away
 
   # add deliver_by error if date diff is less than 7
