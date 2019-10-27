@@ -10,7 +10,7 @@
 type_info = [{ name: 'widget' }, { name: 'widget pro' }, { name: 'widget xtreme' }]
 types = Type.create(type_info)
 colors = ['red', 'yellow', 'blue']
-dates = [Date.today + 1.weeks, Date.today + 2.weeks, Date.today + 3.weeks]
+dates = [Time.current + 1.weeks, Time.current + 2.weeks, Time.current + 3.weeks]
 
 10.times do
   Order.create(

@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 2019_10_25_041829) do
   create_table "orders", force: :cascade do |t|
     t.integer "quantity", null: false
     t.string "color", null: false
-    t.date "deliver_by", null: false
+    t.datetime "deliver_by", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.integer "type_id"
