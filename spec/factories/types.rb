@@ -3,11 +3,11 @@ FactoryBot.define do
     name { 'widget' }
   end
 
-  factory :pro_type do
+  trait :pro do
     name { 'widget pro' }
   end
 
-  factory :xtreme_type do
+  trait :xtreme do
     name { 'widget xtreme' }
   end
 end
