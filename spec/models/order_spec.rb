@@ -45,26 +45,26 @@ RSpec.describe Order, type: :model do
   end
 
   describe 'status functionality' do
-    describe '#process' do
+    describe '#ship' do
       it 'when order is pending' do
-        subject.process
+        subject.ship
 
-        expect(subject.status.to_s).to eq('processing')
+        expect(subject.status.to_s).to eq('shipped')
       end
 
       context 'when order is completed' do
         let(:completed_order) { create(:order, status: 'completed') }
 
-        it { expect{completed_order.process}.to raise_error(AASM::InvalidTransition) }
+        it { expect{completed_order.ship}.to raise_error(AASM::InvalidTransition) }
       end
     end
 
     describe '#complete' do
-      context 'when order is pending' do
-        let(:processing_order) { create(:order, status: 'processing') }
-        before { processing_order.complete }
+      context 'when order is shipped' do
+        let(:shipped_order) { create(:order, status: 'shipped') }
+        before { shipped_order.complete }
 
-        it { expect(processing_order.status.to_s).to eq('completed') }
+        it { expect(shipped_order.status.to_s).to eq('completed') }
       end
 
       context 'when order is pending' do

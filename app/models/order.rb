@@ -22,15 +22,15 @@ class Order < ApplicationRecord
 
   aasm column: :status do
     state :pending, initial: true
-    state :processing
+    state :shipped
     state :completed
 
-    event :process do
-      transitions from: :pending, to: :processing
+    event :ship do
+      transitions from: :pending, to: :shipped
     end
 
     event :complete do
-      transitions from: :processing, to: :completed
+      transitions from: :shipped, to: :completed
     end
   end
 
