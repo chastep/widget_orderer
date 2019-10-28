@@ -8,7 +8,7 @@ RSpec.describe "types/index", type: :view do
 
   it "renders a list of types" do
     render
-    assert_select "tr>td", :text => "widget pro", :count => 1
-    assert_select "tr>td", :text => "widget xtreme", :count => 1
+    assert_select "tr>td", :text => type1.offical_name, :count => 1
+    assert_select "tr>td", :text => type2.offical_name, :count => 1
   end
 end

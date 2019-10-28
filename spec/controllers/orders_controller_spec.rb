@@ -88,6 +88,12 @@ RSpec.describe OrdersController, type: :controller do
         expect(order.quantity).to eql(20)
       end
 
+      it "does not update the order uuid" do
+        expect {
+          put :update, params: {id: order.id, order: new_attributes.merge(uuid: 'test123')}
+        }.to_not change(order, :uuid)
+      end
+
       it "redirects to the order" do
         put :update, params: {id: order.to_param, order: new_attributes}
         expect(response).to redirect_to(order)

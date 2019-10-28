@@ -13,7 +13,7 @@ RSpec.describe "orders/index", type: :view do
 
   it "renders a list of orders" do
     render
-    assert_select "tr>td", :text => order1.id.to_s, :count => 1
-    assert_select "tr>td", :text => order2.id.to_s, :count => 1
+    assert_select "tr>td", :text => order1.uuid.to_s, :count => 1
+    assert_select "tr>td", :text => order2.uuid.to_s, :count => 1
   end
 end
