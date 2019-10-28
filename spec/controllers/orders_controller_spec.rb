@@ -11,6 +11,15 @@ RSpec.describe OrdersController, type: :controller do
       type_id: type.id
     }
   }
+  let(:valid_attributes_with_email) {
+    {
+      quantity: 5,
+      color: Order::VALID_COLORS.sample,
+      deliver_by: Time.current + 1.week,
+      type_id: type.id,
+      email: 'test@email.com'
+    }
+  }
   let(:invalid_attributes) {
     {
       quantity: -1,
@@ -54,6 +63,14 @@ RSpec.describe OrdersController, type: :controller do
         expect {
           post :create, params: { order: valid_attributes }
         }.to change(Order, :count).by(1)
+        expect(ActionMailer::Base.deliveries).to be_empty
+      end
+
+      it "creates a new Order with email present" do
+        expect {
+          post :create, params: { order: valid_attributes_with_email }
+        }.to change(Order, :count).by(1)
+        expect(ActionMailer::Base.deliveries).to_not be_empty
       end
 
       it "redirects to the created order" do

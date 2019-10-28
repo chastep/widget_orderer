@@ -12,6 +12,7 @@ class Order < ApplicationRecord
     greater_than: 0,
     only_integer: true
   }
+  validates :email, format: { with: URI::MailTo::EMAIL_REGEXP }, allow_blank: true
   validate :deliver_by_date_one_week_away
   validate :prevent_update_if_uuid_present
 
