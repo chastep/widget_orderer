@@ -55,11 +55,12 @@ class OrdersController < ApplicationController
 
   def ship
     respond_to do |format|
-      if @order.ship!
+      if @order.may_ship?
+        @order.ship!
         format.html { redirect_to @order, notice: "Order ID: #{@order.uuid} was successfully shipped." }
         format.json { render :show, status: :ok, location: @order }
       else
-        format.html { render :edit }
+        format.html { redirect_to @order, notice: "Order cannot be shipped!" }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
@@ -67,11 +68,12 @@ class OrdersController < ApplicationController
 
   def complete
     respond_to do |format|
-      if @order.complete!
+      if @order.may_complete?
+        @order.complete!
         format.html { redirect_to @order, notice: "Order ID: #{@order.uuid} was successfully completed." }
         format.json { render :show, status: :ok, location: @order }
       else
-        format.html { render :edit }
+        format.html { redirect_to @order, notice: "Order cannot be completed!" }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end

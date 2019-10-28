@@ -40,6 +40,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'letter_opener'
   gem 'dotenv-rails'
+  gem 'database_cleaner'
 end
 
 group :development do

@@ -125,6 +125,74 @@ RSpec.describe OrdersController, type: :controller do
     end
   end
 
+  describe "PUT #ship" do
+    context "with valid params" do
+      it "ships the requested order" do
+        put :ship, params: {id: order.id}
+        order.reload
+        expect(order.status).to eql('shipped')
+      end
+
+      it "redirects to the order" do
+        put :ship, params: {id: order.to_param}
+        expect(response).to redirect_to(order)
+      end
+    end
+
+    context "with a non-pending order" do
+      it "returns a success response (i.e. to display 'show' template with notice)" do
+        order = create(:order, status: 'shipped')
+        put :ship, params: {id: order.to_param}
+
+        expect(response).to_not be_successful
+        expect(response).to redirect_to(order)
+      end
+
+      it "returns a success response (i.e. to display 'show' template with notice)" do
+        order = create(:order, status: 'completed')
+        put :ship, params: {id: order.to_param}
+
+        expect(response).to_not be_successful
+        expect(response).to redirect_to(order)
+      end
+    end
+  end
+
+  describe "PUT #complete" do
+    context "with valid params" do
+      it "completes the requested order" do
+        order = create(:order, status: 'shipped')
+        put :complete, params: {id: order.id}
+        order.reload
+        expect(order.status).to eql('completed')
+      end
+
+      it "redirects to the order" do
+        put :complete, params: {id: order.to_param}
+        expect(response).to redirect_to(order)
+      end
+    end
+
+    context "with a non-pending order" do
+      it "returns a success response (i.e. to display 'show' template with notice)" do
+        order = create(:order, status: 'pending')
+        put :complete, params: {id: order.to_param}
+
+        expect(response).to_not be_successful
+        expect(response).to redirect_to(order)
+      end
+
+      it "returns a success response (i.e. to display 'show' template with notice)" do
+        order = create(:order, status: 'completed')
+        put :complete, params: {id: order.to_param}
+
+        expect(response).to_not be_successful
+        expect(response).to redirect_to(order)
+      end
+    end
+  end
+  
+
   describe "DELETE #destroy" do
     it "destroys the requested order" do
       order2 = Order.create! valid_attributes
