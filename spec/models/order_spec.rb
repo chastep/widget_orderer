@@ -16,6 +16,8 @@ RSpec.describe Order, type: :model do
     it { expect(subject).to validate_uniqueness_of(:uuid) }
     it { expect(subject).to validate_numericality_of(:quantity).is_greater_than(0) }
     it { expect(subject).to validate_numericality_of(:quantity).only_integer }
+    it { is_expected.to allow_value("email@address.foo").for(:email) }
+    it { is_expected.to_not allow_value("foo").for(:email) }
 
     context 'deliver by date validation' do
       it 'vaidates that deliver by date is at least 1 week away' do

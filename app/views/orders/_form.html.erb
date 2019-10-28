@@ -6,5 +6,6 @@
     order: [:month, :day, :year]
   %>
   <%= f.association :type, collection: Type.all %>
+  <%= f.input :email %>
   <%= f.button :submit %>
 <% end %>

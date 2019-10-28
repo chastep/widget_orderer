@@ -28,6 +28,8 @@ class OrdersController < ApplicationController
 
     respond_to do |format|
       if @order.save
+        OrderMailer.create_order(@order.id, @order.email).deliver_now if @order.email
+
         format.html { redirect_to @order, notice: "Order ID: #{@order.uuid} was successfully created." }
         format.json { render :show, status: :created, location: @order }
       else
@@ -78,7 +80,8 @@ class OrdersController < ApplicationController
       :quantity,
       :color,
       :deliver_by,
-      :type_id
+      :type_id,
+      :email
     )
   end
 end
