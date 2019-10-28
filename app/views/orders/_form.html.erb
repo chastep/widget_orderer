@@ -3,7 +3,7 @@
   <%= f.input :color, collection: Order::VALID_COLORS %>
   <%= f.input :deliver_by, as: :date,
     start_year: Date.today.year,
-    order: [:day, :month, :year]
+    order: [:month, :day, :year]
   %>
   <%= f.association :type, collection: Type.all %>
   <%= f.button :submit %>

@@ -13,6 +13,7 @@ RSpec.describe Order, type: :model do
     [:quantity, :color, :deliver_by, :type_id].each do |field|
       it { expect(subject).to validate_presence_of(field) }
     end
+    it { expect(subject).to validate_uniqueness_of(:uuid) }
     it { expect(subject).to validate_numericality_of(:quantity).is_greater_than(0) }
     it { expect(subject).to validate_numericality_of(:quantity).only_integer }
 
@@ -24,6 +25,18 @@ RSpec.describe Order, type: :model do
 
       it 'vaidates that deliver by date is not in the future' do
         subject.deliver_by = Time.current - 2.weeks
+        expect(subject.valid?).to be(false)
+      end
+    end
+
+    context 'dont allow uuid to be updated' do
+      it 'by being set to any other value' do
+        subject.uuid = SecureRandom.uuid
+        expect(subject.valid?).to be(false)
+      end
+
+      it 'by being set to nil' do
+        subject.uuid = nil
         expect(subject.valid?).to be(false)
       end
     end

@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 2019_10_25_041829) do
   enable_extension "plpgsql"
 
   create_table "orders", force: :cascade do |t|
+    t.string "uuid", null: false
     t.integer "quantity", null: false
     t.string "color", null: false
     t.datetime "deliver_by", null: false

@@ -8,12 +8,12 @@
 
 
 type_info = [{ name: 'widget' }, { name: 'widget pro' }, { name: 'widget xtreme' }]
-types = Type.create(type_info)
+types = Type.create!(type_info)
 colors = ['red', 'yellow', 'blue']
 dates = [Time.current + 1.weeks, Time.current + 2.weeks, Time.current + 3.weeks]
 
 10.times do
-  Order.create(
+  Order.create!(
     {
       quantity: rand(1..100),
       color: colors.sample,
