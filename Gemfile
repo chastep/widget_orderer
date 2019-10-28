@@ -37,6 +37,7 @@ group :development, :test do
   gem 'pry-rails'
   gem 'factory_bot_rails'
   gem 'shoulda-matchers'
+  gem 'letter_opener'
 end
 
 group :development do
