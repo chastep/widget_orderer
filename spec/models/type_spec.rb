@@ -13,7 +13,7 @@ RSpec.describe Type, type: :model do
     it { expect(subject).to validate_inclusion_of(:name).in_array(described_class::VALID_WIDGET_TYPES) }
   end
 
-  describe '.offical_name' do
+  describe '#offical_name' do
     let(:type) { create(:type, :xtreme) }
 
     it { expect(type.offical_name).to eql('Widget Xtreme') }

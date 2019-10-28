@@ -1,11 +1,13 @@
 class Order < ApplicationRecord
+  include AASM
+
   VALID_COLORS = ['red', 'yellow', 'blue'].freeze
 
   attr_readonly :uuid
 
   belongs_to :type
 
-  validates_presence_of :quantity, :color, :deliver_by, :type_id
+  validates_presence_of :quantity, :color, :deliver_by, :type_id, :status
   validates_uniqueness_of :uuid
   validates :color, inclusion: { in: VALID_COLORS }
   validates :quantity, numericality: {
@@ -17,6 +19,20 @@ class Order < ApplicationRecord
   validate :prevent_update_if_uuid_present
 
   before_create :assign_order_id
+
+  aasm column: :status do
+    state :pending, initial: true
+    state :processing
+    state :completed
+
+    event :process do
+      transitions from: :pending, to: :processing
+    end
+
+    event :complete do
+      transitions from: :processing, to: :completed
+    end
+  end
 
   # add deliver_by error if date diff is less than 7
   def deliver_by_date_one_week_away

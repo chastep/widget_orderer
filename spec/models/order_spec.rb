@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe Order, type: :model do
   subject { create(:order) }
 
-  context 'constants' do
+  describe 'constants' do
     it { expect(described_class::VALID_COLORS).to be_an(Array) }
   end
 
-  context 'validations and associations' do
+  describe 'validations and associations' do
     it { expect(subject).to belong_to(:type) }
     it { expect(subject).to validate_inclusion_of(:color).in_array(described_class::VALID_COLORS) }
-    [:quantity, :color, :deliver_by, :type_id].each do |field|
+    [:quantity, :color, :deliver_by, :type_id, :status].each do |field|
       it { expect(subject).to validate_presence_of(field) }
     end
     it { expect(subject).to validate_uniqueness_of(:uuid) }
@@ -40,6 +40,35 @@ RSpec.describe Order, type: :model do
       it 'by being set to nil' do
         subject.uuid = nil
         expect(subject.valid?).to be(false)
+      end
+    end
+  end
+
+  describe 'status functionality' do
+    describe '#process' do
+      it 'when order is pending' do
+        subject.process
+
+        expect(subject.status.to_s).to eq('processing')
+      end
+
+      context 'when order is completed' do
+        let(:completed_order) { create(:order, status: 'completed') }
+
+        it { expect{completed_order.process}.to raise_error(AASM::InvalidTransition) }
+      end
+    end
+
+    describe '#complete' do
+      context 'when order is pending' do
+        let(:processing_order) { create(:order, status: 'processing') }
+        before { processing_order.complete }
+
+        it { expect(processing_order.status.to_s).to eq('completed') }
+      end
+
+      context 'when order is pending' do
+        it { expect{subject.complete}.to raise_error(AASM::InvalidTransition) }
       end
     end
   end
