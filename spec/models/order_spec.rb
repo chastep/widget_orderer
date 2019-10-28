@@ -45,7 +45,25 @@ RSpec.describe Order, type: :model do
   end
 
   describe 'status functionality' do
-    describe '#ship' do
+    describe '#may_ship?' do
+      it 'when order is pending' do
+        expect(subject.may_ship?).to be(true)
+      end
+
+      context 'when order is shipped' do
+        let(:shipped_order) { create(:order, status: 'shipped') }
+
+        it { expect(shipped_order.may_ship?).to be(false) }
+      end
+
+      context 'when order is completed' do
+        let(:completed_order) { create(:order, status: 'completed') }
+
+        it { expect(completed_order.may_ship?).to be(false) }
+      end
+    end
+
+    describe '#ship!' do
       it 'when order is pending' do
         subject.ship
 
@@ -59,7 +77,25 @@ RSpec.describe Order, type: :model do
       end
     end
 
-    describe '#complete' do
+    describe '#may_complete?' do
+      it 'when order is pending' do
+        expect(subject.may_complete?).to be(false)
+      end
+
+      context 'when order is shipped' do
+        let(:shipped_order) { create(:order, status: 'shipped') }
+
+        it { expect(shipped_order.may_complete?).to be(true) }
+      end
+
+      context 'when order is completed' do
+        let(:completed_order) { create(:order, status: 'completed') }
+
+        it { expect(completed_order.may_ship?).to be(false) }
+      end
+    end
+
+    describe '#complete!' do
       context 'when order is shipped' do
         let(:shipped_order) { create(:order, status: 'shipped') }
         before { shipped_order.complete }

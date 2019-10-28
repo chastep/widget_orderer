@@ -6,13 +6,14 @@ class SessionsController < ApplicationController
   def create
     user_params = params.require(:user).permit(:username, :password)
 
-    @user = User.new
-      .tap { |su| su.username = user_params[:username] }
-      .tap { |su| su.password = user_params[:password] }
+    @user = User.new({
+      username: user_params[:username],
+      password: user_params[:password]
+    })
 
     if @user.login_valid?
       session[:admin] = true
-      redirect_to '/orders'
+      redirect_to orders_path, notice: 'Welcome Admin!'
     else
       @user.password = nil
       flash[:notice] = 'Sorry, invalid login.'
@@ -22,6 +23,6 @@ class SessionsController < ApplicationController
 
   def destroy
     reset_session
-    redirect_to orders_path
+    redirect_to orders_path, notice: 'Goodbye!'
   end
 end
