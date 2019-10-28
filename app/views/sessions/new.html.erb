@@ -1,0 +1,11 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Admin Login</h1>
+
+<%= simple_form_for @user, url: login_path do |f| %>
+  <%= f.input :username %>
+  <%= f.input :password %>
+  <%= f.button :submit, 'Log in' %>
+<% end %>
+
+<%= link_to 'Back', orders_path %>

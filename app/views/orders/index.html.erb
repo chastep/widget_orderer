@@ -12,7 +12,7 @@
         <th colspan="1">Deliver By</th>
         <th colspan="1">Order ID</th>
         <th colspan="1">Status</th>
-        <th colspan="3">Actions</th>
+        <th colspan="4">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -27,6 +27,9 @@
           <td><%= link_to 'Show', order %></td>
           <td><%= link_to 'Edit', edit_order_path(order) %></td>
           <td><%= link_to 'Destroy', order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <% if session[:admin] %>
+            <td><%= link_to 'Update Status', edit_order_path(order) %></td>
+          <% end %>
         </tr>
       <% end %>
     </tbody>
@@ -38,3 +41,8 @@
 <br>
 
 <%= link_to 'New Order', new_order_path %>
+<% if session[:admin] %>
+  <%= link_to 'Log Out', logout_path, method: :delete %>
+<% else %>
+  <%= link_to 'Admin Login', login_path %>
+<% end %>
