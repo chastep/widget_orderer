@@ -14,7 +14,7 @@ class OrdersController < ApplicationController
 
   # GET /orders/new
   def new
-    @order = Order.new(uuid: SecureRandom.uuid)
+    @order = Order.new
   end
 
   # GET /orders/1/edit
