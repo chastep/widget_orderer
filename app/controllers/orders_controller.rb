@@ -119,6 +119,6 @@ class OrdersController < ApplicationController
       :deliver_by,
       :type_id,
       :email
-    )
+    ).reject { |_, v| v.blank? || v == [''] }
   end
 end
