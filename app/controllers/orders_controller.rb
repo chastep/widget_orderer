@@ -1,11 +1,12 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :ship, :complete, :destroy]
   before_action :check_for_admin, only: [:ship, :complete]
+  before_action :check_if_pending, only: [:update]
 
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.all.includes(:type)
+    @orders = Order.all.includes(:type).order(quantity: :asc)
   end
 
   # GET /orders/1
@@ -85,7 +86,7 @@ class OrdersController < ApplicationController
   def destroy
     @order.destroy
     respond_to do |format|
-      format.html { redirect_to orders_url, notice: "Order ID: #{@order.uuid} was successfully destroyed." }
+      format.html { redirect_to orders_path, notice: "Order ID: #{@order.uuid} was successfully destroyed." }
       format.json { head :no_content }
     end
   end
@@ -98,11 +99,16 @@ class OrdersController < ApplicationController
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_order
-    @order = Order.find(params[:id])
+    @order = Order.find_by(id: params[:id])
+    redirect_to orders_path, notice: "Order ID: #{params[:id]} cannot be located." unless @order
   end
 
   def check_for_admin
     redirect_to @order, notice: "Only admins can do that!" unless session[:admin]
+  end
+
+  def check_if_pending
+    redirect_to @order, notice: "You can't update a non-pending order!" unless @order.pending?
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

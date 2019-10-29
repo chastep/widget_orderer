@@ -34,10 +34,9 @@
 <% else %>
   <p>There are no orders present!</p>
 <% end %>
-
 <br>
-
 <%= link_to 'New Order', new_order_path %>
+<br>
 <% if session[:admin] %>
   <%= link_to 'Log Out', logout_path, method: :delete %>
 <% else %>

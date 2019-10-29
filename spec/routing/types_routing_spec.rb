@@ -9,29 +9,5 @@ RSpec.describe TypesController, type: :routing do
     it "routes to #show" do
       expect(:get => "/types/1").to route_to("types#show", :id => "1")
     end
-
-    xit "routes to #new" do
-      expect(:get => "/types/new").to route_to("types#new")
-    end
-
-    xit "routes to #edit" do
-      expect(:get => "/types/1/edit").to route_to("types#edit", :id => "1")
-    end
-
-    xit "routes to #create" do
-      expect(:post => "/types").to route_to("types#create")
-    end
-
-    xit "routes to #update via PUT" do
-      expect(:put => "/types/1").to route_to("types#update", :id => "1")
-    end
-
-    xit "routes to #update via PATCH" do
-      expect(:patch => "/types/1").to route_to("types#update", :id => "1")
-    end
-
-    xit "routes to #destroy" do
-      expect(:delete => "/types/1").to route_to("types#destroy", :id => "1")
-    end
   end
 end

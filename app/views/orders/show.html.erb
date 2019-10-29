@@ -32,7 +32,6 @@
         <% if @order.pending? %>
           <td><%= link_to 'Ship Order', ship_order_path(@order), method: :put %></td>
         <% elsif @order.shipped? %>
-          <td><%= link_to 'Ship Order', ship_order_path(@order), method: :put %></td>
           <td><%= link_to 'Complete Order', complete_order_path(@order), method: :put %></td>
         <% else %>
           <td>All done! Hooray!</td>
@@ -41,6 +40,5 @@
     </tr>
   </tbody>
 </table>
-
-<%= link_to 'Edit Order', edit_order_path(@order) %> |
+<br>
 <%= link_to 'All Orders', orders_path %>
