@@ -1,5 +1,6 @@
 class OrdersController < ApplicationController
   before_action :set_order, only: [:show, :edit, :update, :ship, :complete, :destroy]
+  before_action :check_for_admin, only: [:ship, :complete]
 
   # GET /orders
   # GET /orders.json
@@ -98,6 +99,10 @@ class OrdersController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_order
     @order = Order.find(params[:id])
+  end
+
+  def check_for_admin
+    redirect_to @order, notice: "Only admins can do that!" unless session[:admin]
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.

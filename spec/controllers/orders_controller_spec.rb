@@ -126,11 +126,25 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   describe "PUT #ship" do
-    context "with valid params" do
+    context "with valid params and admin session" do
       it "ships the requested order" do
+        session[:admin] = true
         put :ship, params: {id: order.id}
         order.reload
         expect(order.status).to eql('shipped')
+      end
+
+      it "redirects to the order" do
+        put :ship, params: {id: order.to_param}
+        expect(response).to redirect_to(order)
+      end
+    end
+
+    context "with valid params and invalid admin session" do
+      it "ships the requested order" do
+        put :ship, params: {id: order.id}
+        order.reload
+        expect(order.status).to eql('pending')
       end
 
       it "redirects to the order" do
@@ -159,12 +173,27 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   describe "PUT #complete" do
-    context "with valid params" do
+    context "with valid params and admin session" do
       it "completes the requested order" do
+        session[:admin] = true
         order = create(:order, status: 'shipped')
         put :complete, params: {id: order.id}
         order.reload
         expect(order.status).to eql('completed')
+      end
+
+      it "redirects to the order" do
+        put :complete, params: {id: order.to_param}
+        expect(response).to redirect_to(order)
+      end
+    end
+
+    context "with valid params and invalid admin session" do
+      it "completes the requested order" do
+        order = create(:order, status: 'shipped')
+        put :complete, params: {id: order.id}
+        order.reload
+        expect(order.status).to eql('shipped')
       end
 
       it "redirects to the order" do
