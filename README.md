@@ -65,9 +65,6 @@ Clone down and run the commands below:
 * `./bin/rails s`
 * Enjoy!
 
-### Heroku
-[Heroku Employee Widget Orderer]()
-
 Just open a PR and push if you find something wrong, any feedback would be greatly appreciated!
 
 This project is released under the [MIT Open Source license](LICENSE.md)
