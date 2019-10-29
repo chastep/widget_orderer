@@ -10,7 +10,11 @@
       <th colspan="1">Type</th>
       <th colspan="1">Deliver By</th>
       <th colspan="1">Order ID</th>
+      <th colspan="1">Status</th>
       <th colspan="3">Actions</th>
+      <% if session[:admin] %>
+        <th colspan="1">Change Status</th>
+      <% end %>
     </tr>
   </thead>
   <tbody>
@@ -20,12 +24,23 @@
       <td><%= @order.type.offical_name %></td>
       <td><%= @order.deliver_by.strftime('%m/%d/%Y') %></td>
       <td><%= @order.uuid %></td>
+      <td><%= @order.status.capitalize %></td>
       <td><%= link_to 'Show', @order %></td>
       <td><%= link_to 'Edit', edit_order_path(@order) %></td>
       <td><%= link_to 'Destroy', @order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% if session[:admin] %>
+        <% if @order.pending? %>
+          <td><%= link_to 'Ship Order', ship_order_path(@order), method: :put %></td>
+        <% elsif @order.shipped? %>
+          <td><%= link_to 'Ship Order', ship_order_path(@order), method: :put %></td>
+          <td><%= link_to 'Complete Order', complete_order_path(@order), method: :put %></td>
+        <% else %>
+          <td>All done! Hooray!</td>
+        <% end %>
+      <% end %>
     </tr>
   </tbody>
 </table>
 
-<%= link_to 'Edit', edit_order_path(@order) %> |
-<%= link_to 'Back', orders_path %>
+<%= link_to 'Edit Order', edit_order_path(@order) %> |
+<%= link_to 'All Orders', orders_path %>

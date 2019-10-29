@@ -1,5 +1,5 @@
 class OrdersController < ApplicationController
-  before_action :set_order, only: [:show, :edit, :update, :destroy]
+  before_action :set_order, only: [:show, :edit, :update, :ship, :complete, :destroy]
 
   # GET /orders
   # GET /orders.json
@@ -48,6 +48,32 @@ class OrdersController < ApplicationController
         format.json { render :show, status: :ok, location: @order }
       else
         format.html { render :edit }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def ship
+    respond_to do |format|
+      if @order.may_ship?
+        @order.ship!
+        format.html { redirect_to @order, notice: "Order ID: #{@order.uuid} was successfully shipped." }
+        format.json { render :show, status: :ok, location: @order }
+      else
+        format.html { redirect_to @order, notice: "Order cannot be shipped!" }
+        format.json { render json: @order.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def complete
+    respond_to do |format|
+      if @order.may_complete?
+        @order.complete!
+        format.html { redirect_to @order, notice: "Order ID: #{@order.uuid} was successfully completed." }
+        format.json { render :show, status: :ok, location: @order }
+      else
+        format.html { redirect_to @order, notice: "Order cannot be completed!" }
         format.json { render json: @order.errors, status: :unprocessable_entity }
       end
     end
