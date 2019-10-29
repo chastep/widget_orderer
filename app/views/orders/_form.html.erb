@@ -6,6 +6,6 @@
     order: [:month, :day, :year]
   %>
   <%= f.association :type, collection: Type.all %>
-  <%= f.input :email %>
+  <%= f.input :email, disabled: @order.persisted? %>
   <%= f.button :submit %>
 <% end %>

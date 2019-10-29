@@ -88,17 +88,17 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   describe "PUT #update" do
-    context "with valid params" do
-      let(:type_2) { create(:type, :pro) }
-      let(:new_attributes) {
-        {
-          quantity: 20,
-          color: Order::VALID_COLORS.sample,
-          deliver_by: Time.current + 2.week,
-          type_id: type_2.id
-        }
+    let(:type_2) { create(:type, :pro) }
+    let(:new_attributes) {
+      {
+        quantity: 20,
+        color: Order::VALID_COLORS.sample,
+        deliver_by: Time.current + 2.week,
+        type_id: type_2.id
       }
+    }
 
+    context "with valid params" do
       it "updates the requested order" do
         put :update, params: {id: order.id, order: new_attributes}
         order.reload
@@ -117,6 +117,15 @@ RSpec.describe OrdersController, type: :controller do
       end
     end
 
+    context 'cant update a non-pending order' do
+      it "fails to update" do
+        order = create(:order, status: 'shipped')
+        expect {
+          put :update, params: {id: order.id, order: new_attributes}
+        }.to_not change(order, :quantity)
+      end
+    end
+
     context "with invalid params" do
       it "returns a success response (i.e. to display the 'edit' template)" do
         put :update, params: {id: order.to_param, order: invalid_attributes}
@@ -126,11 +135,25 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   describe "PUT #ship" do
-    context "with valid params" do
+    context "with valid params and admin session" do
       it "ships the requested order" do
+        session[:admin] = true
         put :ship, params: {id: order.id}
         order.reload
         expect(order.status).to eql('shipped')
+      end
+
+      it "redirects to the order" do
+        put :ship, params: {id: order.to_param}
+        expect(response).to redirect_to(order)
+      end
+    end
+
+    context "with valid params and invalid admin session" do
+      it "ships the requested order" do
+        put :ship, params: {id: order.id}
+        order.reload
+        expect(order.status).to eql('pending')
       end
 
       it "redirects to the order" do
@@ -159,12 +182,27 @@ RSpec.describe OrdersController, type: :controller do
   end
 
   describe "PUT #complete" do
-    context "with valid params" do
+    context "with valid params and admin session" do
       it "completes the requested order" do
+        session[:admin] = true
         order = create(:order, status: 'shipped')
         put :complete, params: {id: order.id}
         order.reload
         expect(order.status).to eql('completed')
+      end
+
+      it "redirects to the order" do
+        put :complete, params: {id: order.to_param}
+        expect(response).to redirect_to(order)
+      end
+    end
+
+    context "with valid params and invalid admin session" do
+      it "completes the requested order" do
+        order = create(:order, status: 'shipped')
+        put :complete, params: {id: order.id}
+        order.reload
+        expect(order.status).to eql('shipped')
       end
 
       it "redirects to the order" do
