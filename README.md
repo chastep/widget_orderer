@@ -32,11 +32,12 @@ Extra Credit Functionality:
 * [RubyGems](https://rubygems.org/pages/download)
 * ruby 2.6.5 (I recommend using [rbenv](https://github.com/rbenv/rbenv) to configure your local ruby/rails version)
 * rails 6.0.0 ([rails gem download](https://rubygems.org/gems/rails/versions/4.2.6))
+* yarn 1.13.0 (https://yarnpkg.com/en/) - dependency manager, installed out of habit/future development potential 
 * postgresql 11.5 ([download](https://www.postgresql.org/download/), I recommend using the Homebrew download if you have a mac)
 
 ## Testing/Additional Applications
 
-[Rspec](https://rspec.info/) is used for all test coverage. All major controller and model functionality is covered in the `spec` directory.
+[Rspec](https://rspec.info/) is used for all test coverage. To run locally just run `rspec`. All major controller and model functionality is covered in the `spec` directory.
 
 A variety of gems are used to increase app functionality. A list below:
 
@@ -51,13 +52,18 @@ A variety of gems are used to increase app functionality. A list below:
 
 ### To run locally:
 
-Clone down and run the below commands:
+Clone down and run the commands below:
 
 * `git clone git@github.com:chastep/widget_orderer.git`
 * `cd widget_orderer`
 * `bundle install`
-* `./bin/rake db:setup` 
+* `yarn install --check-files`
+* `./bin/rake db:setup`
+* In order to get admin functionality to work locally you'll have to create a fresh `.git.development` file where only you know the credentials. I have the template ready for you:
+  * `mv .env.template .env.development`
+* Update the variables to something only you know (I'm not looking)
 * `./bin/rails s`
+* Enjoy!
 
 ### Heroku
 [Heroku Employee Widget Orderer]()
